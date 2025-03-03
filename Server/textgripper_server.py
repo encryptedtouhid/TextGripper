@@ -49,7 +49,7 @@ def clipboard_listener():
         asyncio.run(broadcast_text(text))
 
 def start_server():
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="192.168.1.15", port=8000)
 
 # Start the WebSocket server in a separate thread
 server_thread = Thread(target=start_server, daemon=True)
