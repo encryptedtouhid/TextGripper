@@ -5,7 +5,7 @@ import json
 import threading
 
 # WebSocket URL
-WS_URL = "ws://localhost:8000/ws"
+WS_URL = "ws://192.168.1.15:8000/ws"
 
 class TextGripperClient:
     def __init__(self, root):
