@@ -20,7 +20,7 @@ async def send_text(text):
     try:
         async with websockets.connect(SERVER_URL) as websocket:
             print(f"Sending: {text}")
-            await websocket.send(json.dumps({"text": text}))
+            await websocket.send(text)
             await asyncio.sleep(0.1)  # Ensure message is sent before closing
     except Exception as e:
         print(f"Error: {e}")
