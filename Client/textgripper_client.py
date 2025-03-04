@@ -1,4 +1,4 @@
-import tkinter as tk  # ✅ Fix: Import Tkinter
+import tkinter as tk
 import asyncio
 import websockets
 import json
@@ -12,7 +12,6 @@ load_dotenv()
 SERVER_IP = os.getenv("SERVER_IP", "localhost")
 SERVER_PORT = os.getenv("SERVER_PORT", "8000")
 
-# WebSocket URL
 WS_URL = f"ws://{SERVER_IP}:{SERVER_PORT}/ws"
 
 class TextGripperClient:
