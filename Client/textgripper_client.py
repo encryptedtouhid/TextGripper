@@ -14,6 +14,7 @@ SERVER_PORT = os.getenv("SERVER_PORT", "8000")
 
 WS_URL = f"ws://{SERVER_IP}:{SERVER_PORT}/ws"
 
+
 class TextGripperClient:
     def __init__(self, root):
         self.root = root
@@ -39,12 +40,18 @@ class TextGripperClient:
                 self.update_status("Connected ✅", "green")
                 while True:
                     message = await websocket.recv()
-                    data = json.loads(message)
-                    text = data.get("text", "")
 
-                    if text:
-                        print(text)  # ✅ Print only the text received, not JSON
+                    # Ensure the message is a valid JSON before parsing
+                    try:
+                        data = json.loads(message)
+                        text = data.get("text", "")
+                    except json.JSONDecodeError:
+                        text = message  # If it's not JSON, just use the raw message
+
+                    if isinstance(text, str):  # Ensure it's a string
+                        print(text)  # ✅ Print only the text
                         self.append_text(text)
+
         except Exception as e:
             self.update_status("Disconnected ❌", "red")
             print(f"WebSocket Error: {e}")
@@ -65,6 +72,7 @@ class TextGripperClient:
     def update_status(self, text, color):
         """Updates the status label in the UI."""
         self.status_label.config(text=f"Status: {text}", fg=color)
+
 
 # Start the GUI application
 if __name__ == "__main__":
