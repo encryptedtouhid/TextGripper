@@ -3,9 +3,16 @@ import asyncio
 import websockets
 import json
 import threading
+from dotenv import load_dotenv
+import os
 
-# WebSocket URL
-WS_URL = "ws://192.168.1.15:8000/ws"
+# Load environment variables
+load_dotenv()
+
+SERVER_IP = os.getenv("SERVER_IP", "localhost")
+SERVER_PORT = os.getenv("SERVER_PORT", "8000")
+
+WS_URL = f"ws://{SERVER_IP}:{SERVER_PORT}/ws"
 
 class TextGripperClient:
     def __init__(self, root):
@@ -36,6 +43,7 @@ class TextGripperClient:
                     text = data.get("text", "")
 
                     if text:
+                        print(f"Received: {text}")  # Debugging
                         self.append_text(text)
         except Exception as e:
             self.update_status("Disconnected ❌", "red")
