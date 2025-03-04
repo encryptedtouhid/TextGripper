@@ -17,7 +17,7 @@ TextGripper/
 │── server/
 │   ├── textgripper_server.py             # WebSocket Server (FastAPI)
 │── broadcaster/
-│   ├── textgripper_broadcaster.py                    # Sends clipboard text to the server
+│   ├── textgripper_broadcaster.py        # Sends clipboard text to the server
 │── client/
 │   ├── textgripper_client.py             # Python GUI Client (Tkinter)
 │── .env                                  # Configuration file (Server IP, Port)
