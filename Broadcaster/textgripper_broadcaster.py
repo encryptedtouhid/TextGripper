@@ -2,8 +2,8 @@ import asyncio
 import websockets
 import json
 import pyperclip
-import keyboard  # Detect hotkeys
-import time  # Delay for clipboard updates
+import keyboard
+import time
 from dotenv import load_dotenv
 import os
 
@@ -19,7 +19,9 @@ async def send_text(text):
     """Send text to the WebSocket server."""
     try:
         async with websockets.connect(SERVER_URL) as websocket:
+            print(f"Sending: {text}")
             await websocket.send(json.dumps({"text": text}))
+            await websocket.close()  # Close connection after sending
     except Exception as e:
         print(f"Error: {e}")
 
