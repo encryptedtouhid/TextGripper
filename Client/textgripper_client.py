@@ -1,3 +1,4 @@
+import tkinter as tk  # ✅ Fix: Import Tkinter
 import asyncio
 import websockets
 import json
@@ -8,8 +9,8 @@ import os
 # Load environment variables
 load_dotenv()
 
-SERVER_IP = os.getenv("SERVER_IP", "localhost")  # Default to localhost if not set
-SERVER_PORT = os.getenv("SERVER_PORT", 8000)
+SERVER_IP = os.getenv("SERVER_IP", "localhost")
+SERVER_PORT = os.getenv("SERVER_PORT", "8000")
 
 # WebSocket URL
 WS_URL = f"ws://{SERVER_IP}:{SERVER_PORT}/ws"
