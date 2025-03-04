@@ -43,7 +43,7 @@ class TextGripperClient:
                     text = data.get("text", "")
 
                     if text:
-                        print(f"Received: {text}")  # Debugging
+                        print(text)  # ✅ Print only the text received, not JSON
                         self.append_text(text)
         except Exception as e:
             self.update_status("Disconnected ❌", "red")
