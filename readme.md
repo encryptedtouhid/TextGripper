@@ -57,7 +57,7 @@ Replace `your-public-ip` with the actual server IP or domain.
 ```sh
 python server/textgripper_server.py  
 ```
-The server will start on `ws://your-public-ip:8000/ws`
+The server will start on `ws://0.0.0.0:8000/ws`
 
 ### 5️⃣ Start the Broadcaster
 Run this on the machine where you want to capture clipboard text:
