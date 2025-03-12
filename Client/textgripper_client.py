@@ -18,14 +18,14 @@ class TextGripperClient:
     def __init__(self, root):
         self.root = root
         self.root.title("TextGripper Client")
-        self.root.geometry("500x400")
+        self.root.geometry("600x700")
 
         # Status Label
         self.status_label = tk.Label(root, text="Status: Disconnected ❌", fg="red", font=("Arial", 12, "bold"))
         self.status_label.pack(pady=5)
 
         # Text Area
-        self.text_area = tk.Text(root, wrap="word", height=15, width=50, font=("Arial", 12))
+        self.text_area = tk.Text(root, wrap="word", height=44, width=75, font=("Arial", 12))
         self.text_area.pack(padx=10, pady=10)
 
         # Connect WebSocket in a thread
