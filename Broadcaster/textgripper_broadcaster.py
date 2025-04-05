@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 import os
 import threading
 from pystray import Icon, MenuItem, Menu
-from PIL import Image, ImageDraw
+from PIL import Image
 
 # Load environment variables
 load_dotenv()
@@ -16,26 +16,35 @@ SERVER_IP = os.getenv("SERVER_IP", "localhost")
 SERVER_PORT = os.getenv("SERVER_PORT", "8000")
 SERVER_URL = f"ws://{SERVER_IP}:{SERVER_PORT}/ws"
 
+# Icon paths
+CONNECTED_ICON_PATH = "assets/images/connected.ico"
+DISCONNECTED_ICON_PATH = "assets/images/disconnected.ico"
+
 # Global state
 connected = False
 icon = None
 icon_visible = False
 
-def create_image(color):
-    """Create a colored circle icon."""
-    img = Image.new("RGB", (64, 64), (255, 255, 255))
-    draw = ImageDraw.Draw(img)
-    draw.ellipse((16, 16, 48, 48), fill=color)
-    return img
+def load_icon(path):
+    """Load an .ico file as an image."""
+    try:
+        return Image.open(path)
+    except Exception as e:
+        print(f"Error loading icon '{path}': {e}")
+        return None
 
-def update_icon(color, tooltip):
-    """Update tray icon color and tooltip."""
+def update_icon(icon_path, tooltip):
+    """Update tray icon with custom image and tooltip."""
     global icon, icon_visible
+    icon_image = load_icon(icon_path)
+
     if not icon:
         icon = Icon("ClipboardBroadcaster")
         icon.menu = Menu(MenuItem("Quit", lambda icon, item: icon.stop()))
-    icon.icon = create_image(color)
-    icon.title = tooltip
+
+    if icon_image:
+        icon.icon = icon_image
+        icon.title = tooltip
 
     if not icon_visible:
         icon_visible = True
@@ -47,16 +56,16 @@ async def check_connection():
     try:
         async with websockets.connect(SERVER_URL):
             connected = True
-            update_icon("green", "Connected to server")
-    except Exception as e:
+            update_icon(CONNECTED_ICON_PATH, "Connected to server")
+    except Exception:
         connected = False
-        update_icon("red", f"Disconnected")
+        update_icon(DISCONNECTED_ICON_PATH, "Disconnected")
 
 def background_checker():
     """Continuously checks server connection status."""
     while True:
         asyncio.run(check_connection())
-        time.sleep(5)  # Check every 5 seconds
+        time.sleep(5)
 
 async def send_text(text):
     """Send clipboard text to WebSocket server."""
@@ -64,13 +73,13 @@ async def send_text(text):
     try:
         async with websockets.connect(SERVER_URL) as websocket:
             connected = True
-            update_icon("green", "Connected to server")
+            update_icon(CONNECTED_ICON_PATH, "Connected to server")
             print(f"Sending: {text}")
             await websocket.send(text)
             await asyncio.sleep(0.1)
     except Exception as e:
         connected = False
-        update_icon("red", f"Disconnected: {e}")
+        update_icon(DISCONNECTED_ICON_PATH, f"Disconnected: {e}")
         print(f"Error: {e}")
 
 def get_clipboard_text():
